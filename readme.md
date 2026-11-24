@@ -13,3 +13,19 @@ CREATE TABLE students (
     address TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+## Commands to use if Appache is not working 
+
+1. Open Cmd pannel 
+2. cd C:\xampp\mysql\bin
+3. mysql -u root
+4. Creation of database
+5. type exit to get out of it 
+6. C:\xampp\php\php.exe -v
+7. C:\xampp\php\php.exe -S localhost:8000 -t C:\xampp\htdocs\Your_filename (It will run the server)
+
+
+## DELETE FROM POWERSHELL : 
+
+1. Clear-History 
+2. Remove-Item (Get-PSReadLineOption).HistorySavePath -Force
