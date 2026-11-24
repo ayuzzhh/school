@@ -1,27 +1,15 @@
+
 <?php
 
 $host = "localhost";
-$dbname = "registration_db";
 $username = "root";
 $password = "";
+$database = "ymca_school";
 
-try {
+$conn = mysqli_connect($host, $username, $password, $database);
 
-    $conn = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-        $username,
-        $password
-    );
-
-    $conn->setAttribute(
-        PDO::ATTR_ERRMODE,
-        PDO::ERRMODE_EXCEPTION
-    );
-
-} catch(PDOException $e) {
-
-    die("Database connection failed!");
-
+if (!$conn) {
+    die("Database connection failed: " . mysqli_connect_error());
 }
 
 ?>

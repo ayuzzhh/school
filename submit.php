@@ -1,54 +1,48 @@
+
 <?php
 
-require_once "db.php";
+include "db.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Receiving form data
 
-    $name = trim($_POST["name"] ?? "");
-    $email = trim($_POST["email"] ?? "");
-    $password = $_POST["password"] ?? "";
+$name = $_POST['name'];
+$email = $_POST['email'];
+$phone = $_POST['phone'];
+$class = $_POST['class'];
+$address = $_POST['address'];
 
-    // Validate data
+// Preparing SQL query
 
-    if (empty($name) || empty($email) || empty($password)) {
-        die("All fields are required!");
-    }
+$sql = "INSERT INTO students (name, email, phone, class, address)
+        VALUES (?, ?, ?, ?, ?)";
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die("Invalid email address!");
-    }
+$stmt = mysqli_prepare($conn, $sql);
 
-    // Hash password
+mysqli_stmt_bind_param(
+    $stmt,
+    "sssss",
+    $name,
+    $email,
+    $phone,
+    $class,
+    $address
+);
 
-    $hashedPassword = password_hash(
-        $password,
-        PASSWORD_DEFAULT
-    );
+// Executing query
 
-    try {
+if (mysqli_stmt_execute($stmt)) {
 
-        $sql = "INSERT INTO users (name, email, password)
-                VALUES (:name, :email, :password)";
+    echo "<h2>Registration Successful!</h2>";
+    echo "<p>Welcome to YMCA School.</p>";
+    echo "<a href='index.html'>Go to Home</a>";
 
-        $stmt = $conn->prepare($sql);
+} else {
 
-        $stmt->execute([
-            ":name" => $name,
-            ":email" => $email,
-            ":password" => $hashedPassword
-        ]);
-
-        echo "Registration Successful!";
-
-    } catch(PDOException $e) {
-
-        if ($e->getCode() == 23000) {
-            echo "Email already registered!";
-        } else {
-            echo "Something went wrong!";
-        }
-
-    }
+    echo "Error: " . mysqli_error($conn);
 
 }
+
+mysqli_stmt_close($stmt);
+mysqli_close($conn);
+
 ?>
